@@ -39,7 +39,7 @@ namespace AccesoDatos
             {
                 NpgsqlCommand cmd = new NpgsqlCommand("insert into tb_casasalesiana(nombre_cas,direccion_cas,telefono_cas,correo_cas,director_cas,nombrecorto_cas) values('"+casa.nombre_cas+ "','" + casa.direccion_cas + "','" + casa.telefono_cas + "','" + casa.correo_cas + "','" + casa.director_cas + "','" + casa.nombrecorto_cas + "')", conn);
                 cmd.ExecuteNonQuery();
-                //conn.Close();
+                conn.Close();
             }
             catch(Exception e)
             {
