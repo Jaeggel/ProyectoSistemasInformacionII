@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace AccesoDatos
 {
+    /// <summary>
+    /// Clase en donde se realizan las diversas transacciones con la base de datos
+    /// </summary>
     public class AccDatos
     {
         private static NpgsqlConnection conn=null;
