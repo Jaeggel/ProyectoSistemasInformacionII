@@ -1,2 +1,3 @@
-#Proyecto Aplicaciones Distribuidas
-WebService Geoportal Salesiano
+Proyecto Sistemas de Información III
+Joel Ludeña
+
