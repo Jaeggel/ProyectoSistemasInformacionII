@@ -15,6 +15,11 @@ namespace AccesoDatos
     {
         private static NpgsqlConnection conn=null;
         string connstring = null;
+        /// <summary>
+        /// Método para inicializar la cadena de conexión con la Base de Datos
+        /// </summary>
+        /// <param name="ConnectionString"></param>
+        /// <returns></returns>
         public string setConnString(string ConnectionString)
         {
             connstring = ConnectionString;
