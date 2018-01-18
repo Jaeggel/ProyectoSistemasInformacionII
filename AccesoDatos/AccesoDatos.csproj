@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="AccDatos.cs" />
     <Compile Include="Entidades\CasaSalesiana.cs" />
+    <Compile Include="Entidades\Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

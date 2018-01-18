@@ -26,10 +26,26 @@ namespace WebServiceGeoPortalSalesiana
             db.connectDB();
         }
         [WebMethod]
-        public Boolean ingresoCasaSalesiana(CasaSalesiana casaSale)
+        public string ingresoCasaSalesiana(string nombre_cas,string direccion_cas,string telefono_cas,string correo_cas,string director_cas,string nombrecorto_cas)
         {
-            casaSale.pathicono_cas = ConfigurationManager.AppSettings["pathicono_cas"];
-            return db.insertCasaSalesiana(casaSale);
+            CasaSalesiana casa = new CasaSalesiana
+            {
+                nombre_cas=nombre_cas,
+                direccion_cas=direccion_cas,
+                telefono_cas=telefono_cas,
+                correo_cas=correo_cas,
+                director_cas=director_cas,
+                nombrecorto_cas=nombrecorto_cas,
+                estado_cas=true,
+                pathicono_cas = ConfigurationManager.AppSettings["pathicono_cas"]
+            };
+            return db.insertCasaSalesiana(casa);
+        }
+        [WebMethod]
+        public string comprobarUsuario(string usuario,string clave)
+        {
+            db.obtenerListaUsuarios();
+            return db.comprobarUsuario(usuario, clave);
         }
         [WebMethod]
         public List<string> lstCasasSalesianas()
