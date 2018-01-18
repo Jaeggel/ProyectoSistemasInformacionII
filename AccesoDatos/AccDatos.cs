@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace AccesoDatos
 {
     /// <summary>
-    /// Clase en donde se realizan las diversas transacciones con la base de datos
+    /// Clase en donde se realizan las diversas transacciones con la base de datos prueba
     /// </summary>
     public class AccDatos
     {
