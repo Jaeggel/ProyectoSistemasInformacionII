@@ -26,7 +26,7 @@ namespace WebServiceGeoPortalSalesiana
             db.connectDB();
         }
         [WebMethod]
-        public string ingresoCasaSalesiana(string nombre_cas,string direccion_cas,string telefono_cas,string correo_cas,string director_cas,string nombrecorto_cas)
+        public Boolean ingresoCasaSalesiana(string nombre_cas,string direccion_cas,string telefono_cas,string correo_cas,string director_cas,string nombrecorto_cas)
         {
             CasaSalesiana casa = new CasaSalesiana
             {
@@ -35,14 +35,22 @@ namespace WebServiceGeoPortalSalesiana
                 telefono_cas=telefono_cas,
                 correo_cas=correo_cas,
                 director_cas=director_cas,
-                nombrecorto_cas=nombrecorto_cas,
-                estado_cas=true,
-                pathicono_cas = ConfigurationManager.AppSettings["pathicono_cas"]
+                nombrecorto_cas=nombrecorto_cas
             };
             return db.insertCasaSalesiana(casa);
         }
         [WebMethod]
-        public string comprobarUsuario(string usuario,string clave)
+        public Boolean ingresoTipoObraSalesiana(string descripcion_tobr,string pathicono_tobr)
+        {
+            TipoObraSalesiana tipoobra = new TipoObraSalesiana
+            {
+                Descripcion_tobr=descripcion_tobr,
+                PathIcono_tobr=pathicono_tobr
+            };
+            return db.insertTipoObraSalesiana(tipoobra);
+        }
+        [WebMethod]
+        public Boolean comprobarUsuario(string usuario,string clave)
         {
             db.obtenerListaUsuarios();
             return db.comprobarUsuario(usuario, clave);

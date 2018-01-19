@@ -39,7 +39,7 @@ namespace AccesoDatos
             }
         return true;
         }
-        public string insertCasaSalesiana(CasaSalesiana casa)
+        public Boolean insertCasaSalesiana(CasaSalesiana casa)
         {
             try
             {
@@ -49,9 +49,23 @@ namespace AccesoDatos
             }
             catch(Exception)
             {
-                return "false";
+                return false;
             }
-            return "true";
+            return true;
+        }
+        public Boolean insertTipoObraSalesiana(TipoObraSalesiana tipoobra)
+        {
+            try
+            {
+                NpgsqlCommand cmd = new NpgsqlCommand("insert into tb_tipoobra(descripcion_tobr,pathicono_tobr,estado_tobr) values('" + tipoobra.Descripcion_tobr + "','" + tipoobra.PathIcono_tobr+ "','" + tipoobra.Estado_tobr+"')", conn);
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
         }
         public List<string> obtenerListaNombreCasaSalesiana()
         {
@@ -92,31 +106,29 @@ namespace AccesoDatos
             }
             return lstUsuarios;
         }
-        public String comprobarUsuario(string usuario, string clave)
+        public Boolean comprobarUsuario(string usuario, string clave)
         {
-            String sw="true";
+            Boolean sw=false;
             try
             {
                 foreach (var item in lstUsuarios)
                 {
                     if (usuario.Trim() == item.Nombre_Usuario.Trim() && clave.Trim() == item.Contrasenia.Trim())
                     {
-                        sw = "true";
+                        sw = true;
                     }
                     else
                     {
-                        sw="false";
+                        sw=false;
                     }
                 }
             }
             catch(Exception)
             {
-                sw="false";
+                sw=false;
             }
             return sw;
         }
-
-        
         public List<string> obtenerListaTipoCasaSalesiana()
         {
             List<string> lstTipoObras = new List<string>();
