@@ -10,7 +10,9 @@ namespace AccesoDatos.Entidades
     public class ObraSalesiana
     {
         public int id_tobr{ get; set; }
+        public string desc_tobr { get; set; }
         public int id_cas { get; set; }
+        public string desc_cas { get; set; }
         public string denominacion_obr{ get; set; }
         public string camposervicio_obr { get; set; }
         public string productos_obr{ get; set; }

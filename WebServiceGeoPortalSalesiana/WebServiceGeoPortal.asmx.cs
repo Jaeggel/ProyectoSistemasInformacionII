@@ -3,6 +3,7 @@ using AccesoDatos.Entidades;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -19,16 +20,19 @@ namespace WebServiceGeoPortalSalesiana
     [System.ComponentModel.ToolboxItem(false)]
     public class WebServiceGeoPortal : System.Web.Services.WebService
     {
-        #region Inicio Conexión Base de Datos
+        #region Inicio Conexión Base de Datos - Inicio Componentes Varios
         private AccDatos db = new AccDatos();
-        private static string nombreFoto=string.Empty;
+        private AccDatosObjects dbo = new AccDatosObjects();
+        private static string nombreFoto = string.Empty;
         /// <summary>
         /// Constructor para el inicio de la conexión con la Base de Datos
         /// </summary>
         public WebServiceGeoPortal()
         {
             db.SetConnString(ConfigurationManager.AppSettings["ConnectionInfo"]);
+            dbo.SetConnString(ConfigurationManager.AppSettings["ConnectionInfo"]);
             db.ConnectDB();
+            dbo.ConnectDB();
         }
         #endregion
 
@@ -44,16 +48,16 @@ namespace WebServiceGeoPortalSalesiana
         /// <param name="nombrecorto_cas"></param>
         /// <returns></returns>
         [WebMethod]
-        public Boolean ingresoCasaSalesiana(string nombre_cas,string direccion_cas,string telefono_cas,string correo_cas,string director_cas,string nombrecorto_cas)
+        public Boolean ingresoCasaSalesiana(string nombre_cas, string direccion_cas, string telefono_cas, string correo_cas, string director_cas, string nombrecorto_cas)
         {
             CasaSalesiana casa = new CasaSalesiana
             {
-                nombre_cas=nombre_cas,
-                direccion_cas=direccion_cas,
-                telefono_cas=telefono_cas,
-                correo_cas=correo_cas,
-                director_cas=director_cas,
-                nombrecorto_cas=nombrecorto_cas
+                nombre_cas = nombre_cas.Trim(),
+                direccion_cas = direccion_cas.Trim(),
+                telefono_cas = telefono_cas.Trim(),
+                correo_cas = correo_cas.Trim(),
+                director_cas = director_cas.Trim(),
+                nombrecorto_cas = nombrecorto_cas.Trim()
             };
             return db.InsertCasaSalesiana(casa);
         }
@@ -64,12 +68,12 @@ namespace WebServiceGeoPortalSalesiana
         /// <param name="pathicono_tobr"></param>
         /// <returns></returns>
         [WebMethod]
-        public Boolean ingresoTipoObraSalesiana(string descripcion_tobr,string pathicono_tobr)
+        public Boolean ingresoTipoObraSalesiana(string descripcion_tobr, string pathicono_tobr)
         {
             TipoObraSalesiana tipoobra = new TipoObraSalesiana
             {
-                Descripcion_tobr=descripcion_tobr,
-                PathIcono_tobr=pathicono_tobr
+                Descripcion_tobr = descripcion_tobr.Trim(),
+                PathIcono_tobr = pathicono_tobr.Trim()
             };
             return db.InsertTipoObraSalesiana(tipoobra);
         }
@@ -83,7 +87,7 @@ namespace WebServiceGeoPortalSalesiana
         {
             TipoColaborador tipocol = new TipoColaborador
             {
-                descripcion_tcol=descripcion_tcol
+                descripcion_tcol = descripcion_tcol.Trim()
             };
             return db.InsertTipoColaborador(tipocol);
         }
@@ -101,19 +105,19 @@ namespace WebServiceGeoPortalSalesiana
         /// <param name="nombrecorto_obr"></param>
         /// <returns></returns>
         [WebMethod]
-        public Boolean ingresoObraSalesiana(string casa_obr,string tipoobra_obr, string denominacion_obr,string camposervicio_obr,string productos_obr,string horario_obr,string informacion_obr, string paginaweb_obr,string nombrecorto_obr)
+        public Boolean ingresoObraSalesiana(string casa_obr, string tipoobra_obr, string denominacion_obr, string camposervicio_obr, string productos_obr, string horario_obr, string informacion_obr, string paginaweb_obr, string nombrecorto_obr)
         {
-            ObraSalesiana obraSal=new ObraSalesiana
+            ObraSalesiana obraSal = new ObraSalesiana
             {
-                id_tobr=db.ObtenerIdTipoObra(tipoobra_obr),
-                id_cas= db.ObtenerIdCasaSalesiana(casa_obr),
-                denominacion_obr=denominacion_obr,
-                camposervicio_obr=camposervicio_obr,
-                productos_obr=productos_obr,
-                horario_obr=horario_obr,
-                informacion_obr=informacion_obr,
-                paginaweb_obr=paginaweb_obr,
-                nombrecorto_obr=nombrecorto_obr
+                id_tobr = db.ObtenerIdTipoObra(tipoobra_obr.Trim()),
+                id_cas = db.ObtenerIdCasaSalesiana(casa_obr.Trim()),
+                denominacion_obr = denominacion_obr.Trim(),
+                camposervicio_obr = camposervicio_obr.Trim(),
+                productos_obr = productos_obr.Trim(),
+                horario_obr = horario_obr.Trim(),
+                informacion_obr = informacion_obr.Trim(),
+                paginaweb_obr = paginaweb_obr.Trim(),
+                nombrecorto_obr = nombrecorto_obr.Trim()
             };
             return db.InsertObraSalesiana(obraSal);
         }
@@ -130,18 +134,18 @@ namespace WebServiceGeoPortalSalesiana
         /// <param name="longitud_lug"></param>
         /// <returns></returns>
         [WebMethod]
-        public Boolean ingresoLugar(string denominacion_obr,string nombre_lug,string descripcion_lug,string responsable_lug,string direccion_lug,string telefono_lug,string latitud_lug,string longitud_lug)
+        public Boolean ingresoLugar(string denominacion_obr, string nombre_lug, string descripcion_lug, string responsable_lug, string direccion_lug, string telefono_lug, string latitud_lug, string longitud_lug)
         {
             Lugar lugar = new Lugar
             {
-                id_obr = db.ObtenerIdObra(denominacion_obr),
-                nombre_lug = nombre_lug,
-                descripcion_lug = descripcion_lug,
-                responsable_lug = responsable_lug,
-                direccion_lug = direccion_lug,
-                telefono_lug = telefono_lug,
-                latitud_lug=Convert.ToDouble(latitud_lug),
-                longitud_lug= Convert.ToDouble(longitud_lug)
+                id_obr = db.ObtenerIdObra(denominacion_obr.Trim()),
+                nombre_lug = nombre_lug.Trim(),
+                descripcion_lug = descripcion_lug.Trim(),
+                responsable_lug = responsable_lug.Trim(),
+                direccion_lug = direccion_lug.Trim(),
+                telefono_lug = telefono_lug.Trim(),
+                latitud_lug = float.Parse(latitud_lug.Trim(), CultureInfo.InvariantCulture.NumberFormat),
+                longitud_lug = float.Parse(longitud_lug.Trim(), CultureInfo.InvariantCulture.NumberFormat)
             };
             return db.InsertLugar(lugar);
         }
@@ -153,13 +157,13 @@ namespace WebServiceGeoPortalSalesiana
         /// <param name="numero_col"></param>
         /// <returns></returns>
         [WebMethod]
-        public Boolean ingresoColaborador(string nombre_lug,string descripcion_tcol,int numero_col)
+        public Boolean ingresoColaborador(string nombre_lug, string descripcion_tcol, int numero_col)
         {
-            Colaborador colab=new Colaborador
+            Colaborador colab = new Colaborador
             {
-                id_lug=db.ObtenerIdLugar(nombre_lug),
-                id_tcol=db.ObtenerIdTipoColaborador(descripcion_tcol),
-                numero_col=numero_col
+                id_lug = db.ObtenerIdLugar(nombre_lug.Trim()),
+                id_tcol = db.ObtenerIdTipoColaborador(descripcion_tcol.Trim()),
+                numero_col = numero_col
             };
             return db.InsertColaborador(colab);
         }
@@ -171,13 +175,14 @@ namespace WebServiceGeoPortalSalesiana
         /// <param name="numero_ben"></param>
         /// <returns></returns>
         [WebMethod]
-        public Boolean ingresoBeneficiario(string nombre_lug,string descripcion_ben,int numero_ben)
+        public Boolean ingresoBeneficiario(string nombre_lug, string descripcion_ben, int numero_ben)
         {
-            Beneficiario bene=new Beneficiario
+            Beneficiario bene = new Beneficiario
             {
-                id_lug = db.ObtenerIdLugar(nombre_lug),
-                numero_ben=numero_ben,
-                descripcion_ben=descripcion_ben
+                id_lug = db.ObtenerIdLugar(nombre_lug.Trim()),
+                numero_ben = numero_ben,
+                areainfluencia_ben = ConfigurationManager.AppSettings["area_influencia"],
+                descripcion_ben = descripcion_ben.Trim()
             };
             return db.InsertBeneficiario(bene);
         }
@@ -189,14 +194,14 @@ namespace WebServiceGeoPortalSalesiana
         /// <param name="pathfoto_flug"></param>
         /// <returns></returns>
         [WebMethod]
-        public Boolean ingresoFotoLugar(string nombre_lug,string descripcion_flug,string pathfoto_flug)
+        public Boolean ingresoFotoLugar(string nombre_lug, string descripcion_flug, string pathfoto_flug)
         {
-            nombreFoto = db.ObtenerNombrePathFoto(pathfoto_flug);
+            nombreFoto = db.ObtenerNombrePathFoto(pathfoto_flug.Trim());
             FotoLugar foto = new FotoLugar
             {
-                id_lug = db.ObtenerIdLugar(nombre_lug),
-                descripcion_flug = descripcion_flug,
-                pathfoto_flug = ConfigurationManager.AppSettings["prepathfoto_flug"]+ nombreFoto 
+                id_lug = db.ObtenerIdLugar(nombre_lug.Trim()),
+                descripcion_flug = descripcion_flug.Trim(),
+                pathfoto_flug = ConfigurationManager.AppSettings["prepathfoto_flug"] + nombreFoto.Trim()
             };
             return db.InsertFotoLugar(foto);
         }
@@ -210,10 +215,10 @@ namespace WebServiceGeoPortalSalesiana
         /// <param name="clave"></param>
         /// <returns></returns>
         [WebMethod]
-        public Boolean comprobarUsuario(string usuario,string clave)
+        public Boolean comprobarUsuario(string usuario, string clave)
         {
             db.ObtenerListaUsuarios();
-            return db.ComprobarUsuario(usuario, clave);
+            return db.ComprobarUsuario(usuario.Trim(), clave.Trim());
         }
         #endregion
 
@@ -243,7 +248,7 @@ namespace WebServiceGeoPortalSalesiana
         [WebMethod]
         public List<string> lstObrasSalesianasPorCasa(string casa)
         {
-            return db.ObtenerListaObrasPorCasa(casa);
+            return db.ObtenerListaObrasPorCasa(casa.Trim());
         }
         /// <summary>
         /// Método del WebService para la obtención de una lista con los Lugares. Se busca por Obra Salesiana.
@@ -252,14 +257,8 @@ namespace WebServiceGeoPortalSalesiana
         [WebMethod]
         public List<string> lstLugarPorObraSalesiana(string obraSalesiana)
         {
-            return db.ObtenerListaLugarPorObra(obraSalesiana);
+            return db.ObtenerListaLugarPorObra(obraSalesiana.Trim());
         }
-        [WebMethod]
-        public List<Usuario> testUsuarios()
-        {
-            return db.ObtenerListaUsuarios();
-        }
-
         /// <summary>
         /// Método del WebService para la obtención de una lista con los Tipos de Colaboradores.
         /// </summary>
@@ -293,6 +292,65 @@ namespace WebServiceGeoPortalSalesiana
             }
             return true;
         }
-        #endregion        
+        #endregion
+
+        #region Consultas para Reportes Tipo Objeto
+        /// <summary>
+        /// Método del WebService para la obtención de una lista tipo objeto con los Beneficiarios.
+        /// </summary>
+        [WebMethod]
+        public List<Beneficiario> lstBeneficiariosObj()
+        {
+            return dbo.ObtenerListaBeneficiarios();
+        }
+        /// <summary>
+        /// Método del WebService para la obtención de una lista tipo objeto con Casas Salesianas.
+        /// </summary>
+        [WebMethod]
+        public List<CasaSalesiana> lstCasaSalesianaObj()
+        {
+            return dbo.ObtenerListaCasaSalesiana();
+        }
+        /// <summary>
+        /// Método del WebService para la obtención de una lista tipo objeto con los Colaboradores.
+        /// </summary>
+        [WebMethod]
+        public List<Colaborador> lstColaboradoresObj()
+        {
+            return dbo.ObtenerListaColaboradores();
+        }
+        /// <summary>
+        /// Método del WebService para la obtención de una lista tipo objeto con la Foto Lugar.
+        /// </summary>
+        [WebMethod]
+        public List<FotoLugar> lstFotoLugarObj()
+        {
+            return dbo.ObtenerListaFotoLugar();
+        }
+        /// <summary>
+        /// Método del WebService para la obtención de una lista tipo objeto con los Lugares.
+        /// </summary>
+        [WebMethod]
+        public List<Lugar> lstLugarObj()
+        {
+            return dbo.ObtenerListaLugar();
+        }
+        /// <summary>
+        /// Método del WebService para la obtención de una lista tipo objeto con las Obras Salesianas.
+        /// </summary>
+        [WebMethod]
+        public List<ObraSalesiana> lstObraSalesianaObj()
+        {
+            return dbo.ObtenerObraSalesiana();
+        }
+        /// <summary>
+        /// Método del WebService para la obtención de una lista tipo objeto con los Tipos de Obra Salesiana.
+        /// </summary>
+        [WebMethod]
+        public List<TipoObraSalesiana> lstTipoObraSalesianaObj()
+        {
+            return dbo.ObtenerTipoObraObj();
+        }
+        #endregion
     }
 }
