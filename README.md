@@ -1,3 +1,2 @@
-Proyecto Sistemas de Información III
-Joel Ludeña
+Web Service Geo Portal C#
 
